@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>100 Razones por las que te amo Mayu</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        :root {
+            --bg: #0d0d10;
+            --fg: #f0f0f5;
+            --muted: #a0a0a8;
+            --accent: #ff4d6d; /* Un rosa más vibrante */
+            --gradient-start: #1a1a20;
+            --gradient-end: #0d0d10;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Evita desbordamiento horizontal */
+        }
+
+        /* --- Globales para centrado --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        header {
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin: 0;
+            font-size: clamp(36px, 6vw, 60px);
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+            animation: fadeInScale 1.5s ease-out forwards;
+        }
+
+        p.lead {
+            color: var(--muted);
+            margin-top: 15px;
+            font-size: 1.2em;
+            animation: fadeIn 2s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* --- Sección de Bienvenida/Intro --- */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            animation: showIntro 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes showIntro {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .intro-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .intro-title {
+            font-size: clamp(40px, 8vw, 70px);
+            color: var(--accent);
+            font-weight: 900;
+            margin-bottom: 20px;
+            animation: popIn 1s ease-out forwards;
+        }
+
+        .intro-images {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Para móviles */
+        }
+        .intro-images img {
+            width: clamp(100px, 20vw, 180px);
+            height: clamp(100px, 20vw, 180px);
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.4);
+            animation: floatAndFade 2s ease-in-out infinite alternate;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        .intro-images img:nth-child(1) { animation-delay: 1.2s; }
+        .intro-images img:nth-child(2) { animation-delay: 1.8s; }
+        .intro-images img:nth-child(3) { animation-delay: 1.5s; }
+
+        .start-button {
+            background: var(--accent);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
+            transition: transform 0.3s ease, background 0.3s ease;
+            animation: popIn 1s ease-out forwards;
+            animation-delay: 2s;
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        .start-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: #ff6a8d;
+        }
+
+        /* --- NUEVO BOTÓN DE MÚSICA --- */
+        .music-button {
+            background: none;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9em;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: popIn 1s ease-out forwards;
+            animation-delay: 2.2s; /* Un poco después del botón principal */
+        }
+        .music-button:hover {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+        /* Clase para cuando está sonando */
+        .music-button.playing {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* --- Main Content --- */
+        main {
+            flex-grow: 1;
+            padding-bottom: 50px; /* Espacio para el footer */
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: fadeInSlideUp 1.5s ease-out forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative; /* Para las partículas */
+            overflow: hidden;
+        }
+
+        ol {
+            counter-reset: item;
+            columns: 1;
+            column-gap: 40px;
+            padding: 0;
+            list-style: none;
+            margin: 0;
+        }
+        @media(min-width: 768px) {
+            ol {
+                columns: 2;
+            }
+        }
+
+        li {
+            break-inside: avoid;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.07);
+            padding: 18px 20px;
+            border-radius: 18px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 1.1em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: listItemFadeIn 0.8s ease-out forwards;
+            opacity: 0; /* Por defecto, oculto */
+            padding-top: 25px; /* Espacio para el número */
+            padding-left: 30px; /* Espacio para el número */
+        }
+        li:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        li::before {
+            counter-increment: item;
+            content: counter(item) ".";
+            position: absolute;
+            left: 15px;
+            top: -15px;
+            font-weight: 900;
+            font-size: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 999px;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.4);
+            z-index: 2;
+        }
+        
+        .reason-image {
+            width: 100%;
+            height: 200px; /* Altura fija para consistencia */
+            object-fit: cover; /* Recorta la imagen para que encaje */
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        .reason-image:hover {
+            transform: scale(1.03);
+        }
+
+        /* --- Botones --- */
+        .action-button {
+            display: block;
+            background: var(--accent);
+            color: white;
+            padding: 16px 25px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin: 30px auto;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
+            transition: transform 0.3s ease, background 0.3s ease;
+            max-width: fit-content;
+        }
+        .action-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: #ff6a8d;
+        }
+
+        /* --- Footer --- */
+        footer {
+            max-width: 980px;
+            margin: 40px auto 64px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 15px;
+            padding: 0 20px;
+        }
+
+        /* --- Partículas de Fondo --- */
+        .particle {
+            position: absolute;
+            background: rgba(255, 77, 109, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: particle-anim 10s infinite ease-in-out alternate;
+        }
+        .particle:nth-child(1) { width: 15px; height: 15px; top: 10%; left: 20%; animation-delay: 0s; background: rgba(255,255,255,0.1); }
+        .particle:nth-child(2) { width: 25px; height: 25px; top: 30%; left: 80%; animation-delay: 2s; background: rgba(255, 77, 109, 0.3); }
+        .particle:nth-child(3) { width: 20px; height: 20px; top: 60%; left: 40%; animation-delay: 4s; background: rgba(255,255,255,0.15); }
+        .particle:nth-child(4) { width: 30px; height: 30px; top: 80%; left: 10%; animation-delay: 6s; background: rgba(255, 77, 109, 0.2); }
+        .particle:nth-child(5) { width: 10px; height: 10px; top: 5%; left: 60%; animation-delay: 8s; background: rgba(255,255,255,0.05); }
+
+        @keyframes particle-anim {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            50% { transform: translate(50px, -50px) scale(1.2); opacity: 0.8; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+        }
+
+        /* --- Animaciones --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes floatAndFade { 0% { opacity: 0; transform: translateY(0px); } 50% { opacity: 1; transform: translateY(-10px); } 100% { opacity: 0; transform: translateY(0px); } }
+        @keyframes listItemFadeIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        
+        /* --- CORRECCIÓN DEL BUG --- */
+        /* Oculta todos los 'li' DESPUÉS del noveno */
+        #reasons-list li:nth-child(n+10) {
+            display: none;
+        }
+
+        /* Esta clase la pondrá el JavaScript para MOSTRARLOS */
+        .show-all-reasons li {
+            display: block !important; /* Asegura que se muestre */
+        }
+        /* Hacemos que la animación SÓLO se aplique a los que se muestran */
+        .show-all-reasons li:nth-child(n+10) {
+            animation: listItemFadeIn 0.8s ease-out forwards;
+            opacity: 0; /* Para que la animación funcione */
+        }
+        
+    </style>
+</head>
+
+<body>
+    
+    <div id="intro-screen">
+        <div class="intro-content">
+            <h2 class="intro-title">¡Para vos, mi amor!</h2>
+            <div class="intro-images">
+                <img src="https://res.cloudinary.com/dmedd6w1q/image/upload/v1761796940/WhatsApp_Image_2025-10-30_at_1.00.10_AM_qytac5.jpg" alt="Nosotros 1">
+                <img src="https://res.cloudinary.com/dmedd6w1q/image/upload/v1761797159/WhatsApp_Image_2025-10-30_at_1.05.25_AM_raexze.jpg" alt="Nosotros 2">
+                <img src="https://res.cloudinary.com/dmedd6w1q/image/upload/v1761797158/WhatsApp_Image_2025-10-30_at_1.05.24_AM_mijsjr.jpg" alt="Nosotros 3">
+            </div>
+            <button class="start-button" onclick="hideIntro()">Abrir mi corazón</button>
+            
+            <button class="music-button" id="music-btn" onclick="toggleMusic()">
+                ❤️ Tocar para nuestra canción ❤️
+            </button>
+        </div>
+    </div>
+
+    
+    <div id="main-content" style="opacity:0; visibility:hidden;">
+        <header class="container">
+            <h1>100 Razones por las que te amo</h1>
+            <p class="lead">Un pedacito de mi corazón, solo para vos Mayumi.</p>
+        </header>
+
+        <main class="card container">
+            
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+
+            <ol id="reasons-list">
+                <li>Te amo porque te vestís muy bien. Me encantan tus outfits, fue lo primero que me flasheó de vos cuando te conocí.</li>
+                <li>Porque me tratás bonito, siempre con un cariño que me hace sentir único.</li>
+                <li>Porque te dan esos "ataques de amor" que me derriten todo.</li>
+                <li>Porque me das besitos de la nada y me alegrás el día entero.</li>
+                <li>Porque sos súper comprensiva, me escuchás y de verdad me entendés.</li>
+                <li>Porque podemos hablar horas (vos hablás más y yo te escucho) y nunca nos aburrimos.</li>
+                <li>Porque en cada gesto y mirada noto que nos queremos un montón.</li>
+                <li>Porque me encanta tu forma de ser, tan auténtica y especial.</li>
+                <li>Porque me encanta tu risa, esa risa real y un poquito rara jaja, es mi sonido favorito.</li>
+                
+                <li>Porque siento que vos también me amás, y eso me llena el corazón.</li>
+                <li>Porque fuiste la primera chica a la que le regalé flores, y ese momento fue único.</li>
+                <li>Porque fuiste la primera que me regaló algo que de verdad guardo con todo mi cariño.</li>
+                <li>Porque me encanta tu carita, sea cuando reís o cuando te concentrás.
+                    <img src="https://res.cloudinary.com/dmedd6w1q/image/upload/v1761797158/WhatsApp_Image_2025-10-30_at_1.04.22_AM_cvdkr0.jpg" alt="Tu Carita" class="reason-image">
+                </li>
+                <li>Porque sos demasiado tierna, y eso me vuelve loco.</li>
+                <li>Porque me das tu tiempo, que es lo más valioso que tenés.</li>
+                <li>Porque respetás tu privacidad y la nuestra, sin necesidad de redes sociales ni nada de eso.</li>
+                <li>Porque me hacés querer ser una mejor versión de mí. (Aunque ya soy el mejor, obvio).</li>
+                <li>Porque con vos, simplemente soy yo, sin caretas ni miedos.</li>
+                <li>Porque me tenés paciencia, incluso en mis días más complicados o cuando soy "pichado".</li>
+                <li>Porque me tenés "como bobo sonriéndole al cel" con un solo mensaje.</li>
+                <li>Porque cada día encuentro una razón nueva para amarte más.</li>
+                <li>Porque sos súper graciosa (aunque a vos "no te sale bromear", a mi si me sale jaja).</li>
+                <li>Porque me inspirás .</li>
+                <li>Porque siempre me das para adelante, como cuando me decís que soy un "genio" y que "todo lo que me proponga voy a lograr".</li>
+                <li>Porque cada momento a tu lado es una aventura.</li>
+                <li>Porque hacés que los problemas parezcan más pequeños.</li>
+                <li>Porque tus abrazos son mi lugar favorito </li>
+                <li>Porque "extraño tu voz" y me calma siempre.</li>
+                <li>Porque sos mi persona favorita para contarle todo.</li>
+                <li>Porque me sorprendés con detalles, como escribir un diario sobre mí desde que me viste.</li>
+                <li>Porque me das la mano sin pedirla, solo porque sabés que la necesito.</li>
+                <li>Porque me cuidás como nadie, y te preocupás por si.</li>
+                <li>Porque tu mirada me dice más que mil palabras.</li>
+                <li>Porque me demostrás amor con hechos, no solo con palabras.</li>
+                <li>Porque hacés que cada día valga la pena.</li>
+                <li>Porque sos mi mejor amiga y mi amor a la vez.</li>
+                <li>Porque siempre paso bien contigo</li>
+                <li>Porque me enseñás a ver el mundo con otros ojos.</li>
+                <li>Porque sos mi sol en días nublados.</li>
+                <li>Porque compartimos sueños que vamos a construir juntos.</li>
+                <li>Porque me aceptás tal cual soy, con mis virtudes y mis defectos</li>
+                <li>Porque tu presencia ilumina cualquier lugar.</li>
+                <li>Porque me das paz y alegría al mismo tiempo.</li>
+                <li>Porque me das ganas de construir un futuro hermoso con vos.</li>
+                <li>Porque tu energía contagia y me motiva.</li>
+                <li>Porque me hacés sentir el hombre más afortunado del mundo.</li>
+                <li>Porque me impulsás a crecer y mejorar.</li>
+                <li>Porque sos mi ancla cuando el mundo se mueve.</li>
+                <li>Porque tu ingenio me divierte infinitamente </li>
+                <li>Porque me enseñaste el verdadero significado del amor.</li>
+                <li>Porque con vos, el tiempo vuela y se detiene a la vez.</li>
+                <li>Porque tus mensajes de buenos días me llenan de energía.</li>
+                <li>Porque tus "llegaste bien?" me hacen sentir cuidado.</li>
+                <li>Porque defendés lo nuestro con una fuerza increíble.</li>
+                <li>Porque siempre buscás el lado positivo de las cosas.</li>
+                <li>Porque me hacés creer en la magia.</li>
+                <li>Porque tus bailes espontáneos me fascinan.</li>
+                <li>Porque me enseñás a perdonar y avanzar.</li>
+                <li>Porque me das ese empujón que necesito a veces.</li>
+                <li>Porque sos mi compañera de aventuras más valiente.</li>
+                <li>Porque me hiciste escuchar Babasónicos y me gustaron.</li>
+                <li>Porque me encanta escucharte hablar de lo que te apasiona (aunque hables sin parar).</li>
+                <li>Porque sos detallista y siempre recordás lo importante.</li>
+                <li>Porque me hacés sentir seguro y protegido a tu lado.</li>
+                <li>Porque te preocupás por mi familia (y le caes bien a mi mamá y a mi sobrina y a todos).</li>
+                <li>Porque tus consejos son siempre sabios y oportunos.</li>
+                <li>Porque me sorprendés con tu inteligencia.</li>
+                <li>Porque me hacés reír hasta que me duele la panza.</li>
+                <li>Porque me aguantás en mis momentos más densos.</li>
+                <li>Porque valorás mis esfuerzos.</li>
+                <li>Porque me mostrás que el amor es de a dos, siempre.</li>
+                <li>Porque me das el espacio que necesito sin pedirlo.</li>
+                <li>Porque me motivás a perseguir mis sueños más grandes.</li>
+                <li>Porque sos la persona más bonita que conozco.</li>
+                <li>Porque tu presencia lo cura todo.</li>
+                <li>Porque siempre encontrás la forma de hacerme sentir especial.</li>
+                <li>Porque sos mi refugio seguro en este mundo loco.</li>
+                <li>Porque con vos, cada día es una oportunidad para amar.</li>
+                <li>Porque me das ganas de mejorarme a mí mismo.</li>
+                <li>Porque me desafiás a ser mejor, sin presiones.</li>
+                <li>Porque me encanta tu picardía y tu inocencia (y cuando te hacés la "buenita").</li>
+                <li>Porque tenés un corazón gigante que siempre está para los demás.</li>
+                <li>Porque me inspirás a ser un hombre más paciente y atento.</li>
+                <li>Porque me gusta cómo te brillan los ojos cuando hablás de algo que te gusta (como los kdramas, entre otros temas que te gustan).</li>
+                <li>Porque sos la mejor compañera de viajes y de la vida.</li>
+                <li>Porque me hacés sentir un amor que nunca imaginé posible.</li>
+                <li>Porque tus manitas son perfectas para las mías.
+                    <img src="https://res.cloudinary.com/dmedd6w1q/image/upload/v1761797157/WhatsApp_Image_2025-10-30_at_1.04.23_AM_xfhsyr.jpg" alt="Nuestras Manos" class="reason-image">
+                </li>
+                <li>Porque me enseñaste a amar cada parte de mí.</li>
+                <li>Porque me recordás lo bonito que es vivir.</li>
+                <li>Porque sos mi confidente, mi cómplice, mi todo.</li>
+                <li>Porque sos esa chispa que le faltaba a mi vida.</li>
+                <li>Porque cada día, me hacés sentir que el amor es real.</li>
+                <li>Porque me sorprendés con tu fuerza y tu determinación.</li>
+                <li>Porque me das la libertad de ser yo.</li>
+                <li>Porque me encanta ver cómo te emocionás con las cosas simples.</li>
+                <li>Porque sos la melodía más bonita que suena en mi cabeza.</li>
+                <li>Porque tus mensajes espontáneos me alegran el día.</li>
+                <li>Porque me das ganas de comerme el mundo a tu lado.</li>
+                <li>Porque sos la única persona con la que quiero compartir mi futuro.</li>
+                <li>Porque me hacés sentir que lo nuestro es para siempre.</li>
+                <li>Porque me elegís cada día, y eso es un honor.</li>
+                <li>Porque te elijo cada día, sin dudarlo.</li>
+                <li>Porque sos mi persona favorita en este universo.</li>
+                <li>Porque con vos, la vida es mucho más dulce.</li>
+                <li>Porque sos la razón de mis sonrisas más sinceras.</li>
+                <li>Porque "Resulte ser el objetivo de mi objetivo".</li>
+                <li>Porque te amo.</li>
+            </ol>
+
+            <button class="action-button" id="reveal-button" onclick="showAllReasons()">
+                ¿En serio creíste que solo te amo por 9 razones? Toca aquí...
+            </button>
+        </main>
+
+        <footer class="container">
+            <p>Este regalo digital fue creado con todo mi amor de parte de Nando para vos, mi niña. Espero que te haya gustado ❤️.</p>
+        </footer>
+    </div>
+
+    <audio id="our-song" src="https://res.cloudinary.com/dmedd6w1q/video/upload/v1761799006/Babasonicos_-_Puesto_pgaodh.mp3" loop></audio>
+
+
+    <script>
+        var music = document.getElementById('our-song');
+        var musicBtn = document.getElementById('music-btn');
+        var isPlaying = false;
+
+        function toggleMusic() {
+            // El navegador solo permite 'play' después de un clic del usuario.
+            if (isPlaying) {
+                music.pause();
+                musicBtn.innerText = '❤️ Tocar para nuestra canción ❤️';
+                musicBtn.classList.remove('playing');
+            } else {
+                music.play();
+                musicBtn.innerText = '🎧 Pausar canción 🎧';
+                musicBtn.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function hideIntro() {
+            document.getElementById('intro-screen').style.animation = 'fadeOut 1s ease-out forwards';
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('main-content').style.opacity = '1';
+                document.getElementById('main-content').style.visibility = 'visible';
+                
+                // Animamos la aparición de las PRIMERAS 9 razones
+                const reasons = document.querySelectorAll('#reasons-list li:nth-child(-n+9)'); // Selecciona de 1 a 9
+                reasons.forEach((reason, index) => {
+                    reason.style.animationDelay = `${0.1 * index}s`;
+                });
+            }, 900);
+        }
+
+        function showAllReasons() {
+            const list = document.getElementById('reasons-list');
+            
+            // Agregamos la clase que hace 'display: block' a los items ocultos
+            list.classList.add('show-all-reasons'); 
+            
+            // Animamos la aparición de las razones ocultas (10 en adelante)
+            const hiddenReasons = document.querySelectorAll('#reasons-list li:nth-child(n+10)'); // Selecciona 10 en adelante
+            hiddenReasons.forEach((reason, index) => {
+                reason.style.animationDelay = `${0.05 * index}s`; 
+            });
+
+            // Oculta el botón
+            document.getElementById('reveal-button').style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>
